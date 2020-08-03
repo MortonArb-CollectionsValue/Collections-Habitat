@@ -5,6 +5,9 @@
 # Session Data files
 .RData
 
+data/
+figures/
+
 # User-specific files
 .Ruserdata
 
@@ -37,3 +40,4 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+.DS_Store
