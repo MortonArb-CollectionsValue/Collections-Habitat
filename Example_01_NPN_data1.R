@@ -1,12 +1,14 @@
 # Examples for how to download and save datasets
 # 1. Downloading data from The Morton Arboretum
 # 2. Downloading data from NPN
-
+install.packages("devtools")  # if not already installed
+library(devtools)
+install_git("https://github.com/ccolonescu/PoEdata")
 # *** comment these lines out after installing rnpn**  
 # VERY IMPORTANT NOTE: DO NOT INSTALL rnpn FROM CRAN!! 
 # It MUST be installed form github to have the functions we need
 install.packages("devtools")
-library('devtools')
+library(devtools)
 devtools::install_github("usa-npn/rnpn")
 
 library(googlesheets4); library(car); library(lubridate)
@@ -25,7 +27,6 @@ if(!dir.exists("../figures/")) dir.create("../figures/")
 # 1. Arb Data
 # -----------------------------------
 source("clean_google_form.R")
-
 
 # For your project we'll want the 2018 and 2019 Oak data
 # ** First Time: Make sure to follow the prompts in the console**
@@ -64,33 +65,11 @@ png("../figures/Quercus_MortonArb_TimeHisto.png", height=6, width=6, units="in",
 histo.time
 dev.off()
 
-
 # Save the dataset so we can use it later without having to start form scratchg
 # Note the consistent naming scheme w/ the figure saves
 write.csv(quercus.all, "../data/Quercus_MortonArb_2018-2019.csv", row.names=F)
 # -----------------------------------
-#additional plot-making
-ggplot(quercus.all, aes(x=yday, y=leaf.present.observed)) +
-  geom_point()
-#tried color w that one briefly, now completely understand why that isn't an option
-#told me size w discrete data isn't recommended
-ggplot(quercus.all, aes(x=yday, y=leaf.present.observed)) +
-  geom_point()
-#bar/boxplots are good for the discrete data
-#though these calculations seem easier w continuous for some reason
-ggplot(quercus.all, aes(x=yday, y=leaf.present.observed)) +
-  geom_bar(stat="summary")
 
-#useless lines..
-ggplot(quercus.all, aes(x=yday, y=leaf.present.observed)) +
-  geom_line()
-#have to subtract (yday, last leaf) - (yday,first budburst) etc., but maybe shouldn't think of them as coordinates
-#unsure how to locate things like "last leaf" , seems like it is easier to find the first time there are no leaves, but this isn't really the same
-#should do column work?
-#quercus.all$difference=quercus.all$(yday,leaf.present.observed+0?)-quercus.all$(yday,leaf.breaking.buds.observed)
-#unsure how to get yday values and specify that it's the last leaf/time the leaves reach 0 after possibly acquiring leaves, but some trees don't have leaves ever
-#some sort of constraint/finding intersect? but can't show this especially well in a graph because it is discrete data
-#need yday value where a certain observation value enters the desired category for the first time
 
 # -----------------------------------
 # 2. Downloading NPN data
