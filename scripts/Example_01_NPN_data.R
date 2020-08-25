@@ -69,28 +69,48 @@ dev.off()
 # Note the consistent naming scheme w/ the figure saves
 write.csv(quercus.all, "../data/Quercus_MortonArb_2018-2019.csv", row.names=F)
 # -----------------------------------
-#additional plot-making
-ggplot(quercus.all, aes(x=yday, y=leaf.present.observed)) +
-  geom_point()
-#tried color w that one briefly, now completely understand why that isn't an option
-#told me size w discrete data isn't recommended
-ggplot(quercus.all, aes(x=yday, y=leaf.present.observed)) +
-  geom_point()
-#bar/boxplots are good for the discrete data
-#though these calculations seem easier w continuous for some reason
-ggplot(quercus.all, aes(x=yday, y=leaf.present.observed)) +
-  geom_bar(stat="summary")
+#------------------------------------PLots
+ggplot(quercus.all[quercus.all$PlantNumber=="392-2011*1"&quercus.all$Year=="2019"&quercus.all$leaf.present.observed=="Yes",], aes(x=yday, y=leaf.present.observed, color=Observer)) +
+  geom_point() 
+#+  facet_wrap(~Year)
 
-#useless lines..
-ggplot(quercus.all, aes(x=yday, y=leaf.present.observed)) +
-  geom_line()
-#have to subtract (yday, last leaf) - (yday,first budburst) etc., but maybe shouldn't think of them as coordinates
-#unsure how to locate things like "last leaf" , seems like it is easier to find the first time there are no leaves, but this isn't really the same
-#should do column work?
-#quercus.all$difference=quercus.all$(yday,leaf.present.observed+0?)-quercus.all$(yday,leaf.breaking.buds.observed)
-#unsure how to get yday values and specify that it's the last leaf/time the leaves reach 0 after possibly acquiring leaves, but some trees don't have leaves ever
-#some sort of constraint/finding intersect? but can't show this especially well in a graph because it is discrete data
-#need yday value where a certain observation value enters the desired category for the first time
+#-----------------------------------Calculations
+#First leaf to last leaf
+quercus.firstleaf <- aggregate(yday ~ PlantNumber + Year, data=quercus.all[quercus.all$leaf.present.observed=="Yes",], FUN=min)
+summary(quercus.firstleaf)
+head(quercus.firstleaf)
+names(quercus.firstleaf)[names( quercus.firstleaf)=="yday"] <- "yday.firstleaf"
+
+quercus.lastleaf <- aggregate(yday ~ PlantNumber + Year, data=quercus.all[quercus.all$yday>"50" & quercus.all$leaf.present.observed=="Yes",], FUN=max)
+summary(quercus.lastleaf)
+head(quercus.lastleaf)
+names(quercus.lastleaf)[names( quercus.lastleaf)=="yday"] <- "yday.lastleaf"
+
+quercus.summary1 <- merge(quercus.firstleaf, quercus.lastleaf, all=T)
+summary(quercus.summary1)
+
+quercus.summary1$duration1 <- quercus.summary1$yday.lastleaf-quercus.summary1$yday.firstleaf
+summary(quercus.summary1)
+head(quercus.summary1)
+
+hist(quercus.summary1$duration1)
+
+#2: first budburst to last leaf
+
+quercus.firstbudburst <- aggregate(yday ~ PlantNumber + Year, data=quercus.all[quercus.all$leaf.breaking.buds.observed=="Yes",], FUN=min)
+summary(quercus.firstbudburst)
+head(quercus.firstbudburst)
+names(quercus.firstbudburst)[names( quercus.firstbudburst)=="yday"] <- "yday.firstbudburst"
+
+
+quercus.summary2<- merge(quercus.lastleaf, quercus.firstbudburst, all=T)
+summary(quercus.summary2)
+
+quercus.summary2$duration2 <- quercus.summary1$yday.lastleaf-quercus.summary2$yday.firstbudburst
+summary(quercus.summary2)
+head(quercus.summary2)
+
+hist(quercus.summary2$duration2)
 
 # -----------------------------------
 # 2. Downloading NPN data
