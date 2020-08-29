@@ -181,7 +181,7 @@ histo.duration2average <- ggplot(data=duration2average) +
   guides(fill=F)
 histo.duration2average
 
-histo.duration3average <- ggplot(data=duration1average) +
+histo.duration3average <- ggplot(data=duration3average) +
   geom_histogram(aes(x=duration3,),binwidth = 10) +
   guides(fill=F)
 histo.duration3average
@@ -191,20 +191,20 @@ histo.duration4average <- ggplot(data=duration4average) +
   guides(fill=F)
 histo.duration4average
 
-png("../figures/Quercus_Duration1Averages.png", height=6, width=6, units="in", res=180)
-histo.time
+png("../figures/Duration1Averages.png", height=6, width=6, units="in", res=180)
+histo.duration1average
 dev.off()
 
-png("../figures/Quercus_Duration2Averages.png", height=6, width=6, units="in", res=180)
-histo.time
+png("../figures/Duration2Averages.png", height=6, width=6, units="in", res=180)
+histo.duration2average
 dev.off()
 
-png("../figures/Quercus_Duration3Averages.png", height=6, width=6, units="in", res=180)
-histo.time
+png("../figures/Duration3Averages.png", height=6, width=6, units="in", res=180)
+histo.duration3average
 dev.off()
 
-png("../figures/Quercus_Duration4Averages.png", height=6, width=6, units="in", res=180)
-histo.time
+png("../figures/Duration4Averages.png", height=6, width=6, units="in", res=180)
+histo.duration4average
 dev.off()
 
 # -----------------------------------
