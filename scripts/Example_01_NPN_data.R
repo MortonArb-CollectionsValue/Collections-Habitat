@@ -76,12 +76,12 @@ ggplot(quercus.all[quercus.all$PlantNumber=="392-2011*1"&quercus.all$Year=="2019
 
 #-----------------------------------Calculations
 #First leaf to last leaf
-quercus.firstleaf <- aggregate(yday ~ PlantNumber + Year, data=quercus.all[quercus.all$leaf.present.observed=="Yes",], FUN=min)
+quercus.firstleaf <- aggregate(yday ~ PlantNumber + Year, data=quercus.all[quercus.all$yday<"180" & quercus.all$leaf.present.observed=="Yes",], FUN=min)
 summary(quercus.firstleaf)
 head(quercus.firstleaf)
 names(quercus.firstleaf)[names( quercus.firstleaf)=="yday"] <- "yday.firstleaf"
 
-quercus.lastleaf <- aggregate(yday ~ PlantNumber + Year, data=quercus.all[quercus.all$yday>"50" & quercus.all$leaf.present.observed=="Yes",], FUN=max)
+quercus.lastleaf <- aggregate(yday ~ PlantNumber + Year, data=quercus.all[quercus.all$yday>"180" & quercus.all$leaf.present.observed=="Yes",], FUN=max)
 summary(quercus.lastleaf)
 head(quercus.lastleaf)
 names(quercus.lastleaf)[names( quercus.lastleaf)=="yday"] <- "yday.lastleaf"
@@ -106,11 +106,90 @@ names(quercus.firstbudburst)[names( quercus.firstbudburst)=="yday"] <- "yday.fir
 quercus.summary2<- merge(quercus.lastleaf, quercus.firstbudburst, all=T)
 summary(quercus.summary2)
 
-quercus.summary2$duration2 <- quercus.summary1$yday.lastleaf-quercus.summary2$yday.firstbudburst
+quercus.summary2$duration2 <- quercus.summary2$yday.lastleaf-quercus.summary2$yday.firstbudburst
 summary(quercus.summary2)
 head(quercus.summary2)
 
 hist(quercus.summary2$duration2)
+
+#3: first budburst to fall color
+
+quercus.fallcolor <- aggregate(yday ~ PlantNumber + Year, data=quercus.all[quercus.all$leaf.color.observed=="Yes",], FUN=min)
+summary(quercus.fallcolor)
+head(quercus.fallcolor)
+names(quercus.fallcolor)[names( quercus.fallcolor)=="yday"] <- "yday.fallcolor"
+
+
+quercus.summary3<- merge(quercus.firstbudburst, quercus.fallcolor, all=T)
+summary(quercus.summary3)
+
+quercus.summary3$duration3 <- quercus.summary3$yday.fallcolor-quercus.summary3$yday.firstbudburst
+summary(quercus.summary3)
+head(quercus.summary3)
+
+hist(quercus.summary3$duration3)
+
+#4: first leaf to fall color
+
+quercus.fallcolor <- aggregate(yday ~ PlantNumber + Year, data=quercus.all[quercus.all$leaf.color.observed=="Yes",], FUN=min)
+summary(quercus.fallcolor)
+head(quercus.fallcolor)
+names(quercus.fallcolor)[names( quercus.fallcolor)=="yday"] <- "yday.fallcolor"
+
+
+quercus.summary4<- merge(quercus.firstleaf, quercus.fallcolor, all=T)
+summary(quercus.summary3)
+
+quercus.summary4$duration4 <- quercus.summary4$yday.fallcolor-quercus.summary4$yday.firstleaf
+summary(quercus.summary4)
+head(quercus.summary4)
+
+hist(quercus.summary4$duration4)
+
+
+# Saving durations
+
+write.csv(quercus.summary1$duration1, "../data/Durations_First_leaf_last_leaf.csv", row.names=F)
+write.csv(quercus.summary2$duration2, "../data/Durations_First_budburst_last_leaf.csv", row.names=F)
+write.csv(quercus.summary3$duration3, "../data/Durations_First_budburst_fall_color.csv", row.names=F)
+write.csv(quercus.summary4$duration4, "../data/Durations_First_leaf_fall_color.csv", row.names=F)
+
+# Average duration by species and year
+
+duration1average <- aggregate(duration1 ~ PlantNumber+Year, data=quercus.summary1, FUN=mean)
+summary(duration1average)
+
+duration2average <- aggregate(duration2 ~ PlantNumber+Year, data=quercus.summary2, FUN=mean)
+summary(duration2average)
+
+duration3average <- aggregate(duration3 ~ PlantNumber+Year, data=quercus.summary3, FUN=mean)
+summary(duration3average)
+
+duration4average <- aggregate(duration4 ~ PlantNumber+Year, data=quercus.summary4, FUN=mean)
+summary(duration4average)
+
+
+histo.time <- ggplot(data=duration1average) +
+  facet_grid(Year ~ .) +
+  geom_histogram(aes(x=duration1average, fill=PlantNumber), binwidth=7) +
+  guides(fill=F)
+histo.time
+
+png("../figures/Quercus_Duration1Averages.png", height=6, width=6, units="in", res=180)
+histo.time
+dev.off()
+
+png("../figures/Quercus_Duration2Averages.png", height=6, width=6, units="in", res=180)
+histo.time
+dev.off()
+
+png("../figures/Quercus_Duration3Averages.png", height=6, width=6, units="in", res=180)
+histo.time
+dev.off()
+
+png("../figures/Quercus_Duration4Averages.png", height=6, width=6, units="in", res=180)
+histo.time
+dev.off()
 
 # -----------------------------------
 # 2. Downloading NPN data
