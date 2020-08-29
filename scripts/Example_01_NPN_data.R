@@ -168,12 +168,28 @@ summary(duration3average)
 duration4average <- aggregate(duration4 ~ PlantNumber+Year, data=quercus.summary4, FUN=mean)
 summary(duration4average)
 
+#graphing
 
-histo.time <- ggplot(data=duration1average) +
-  facet_grid(Year ~ .) +
-  geom_histogram(aes(x=duration1average, fill=PlantNumber), binwidth=7) +
+histo.duration1average <- ggplot(data=duration1average) +
+  #facet_grid(Year ~ .) + unsure if this is needed if we are just comparing season durations?
+  geom_histogram(aes(x=duration1,),binwidth = 10) +
   guides(fill=F)
-histo.time
+histo.duration1average
+
+histo.duration2average <- ggplot(data=duration2average) +
+  geom_histogram(aes(x=duration2,),binwidth = 10) +
+  guides(fill=F)
+histo.duration2average
+
+histo.duration3average <- ggplot(data=duration1average) +
+  geom_histogram(aes(x=duration3,),binwidth = 10) +
+  guides(fill=F)
+histo.duration3average
+
+histo.duration4average <- ggplot(data=duration4average) +
+  geom_histogram(aes(x=duration4,),binwidth = 10) +
+  guides(fill=F)
+histo.duration4average
 
 png("../figures/Quercus_Duration1Averages.png", height=6, width=6, units="in", res=180)
 histo.time
