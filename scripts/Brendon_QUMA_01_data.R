@@ -1,8 +1,8 @@
 # Attempting to get the min and max for leaves in one Quercus Macrocarpa
 
-install.packages("devtools")
+# install.packages("devtools")
 library('devtools')
-devtools::install_github("usa-npn/rnpn")
+# devtools::install_github("usa-npn/rnpn")
 
 library(googlesheets4); library(car); library(lubridate)
 library(ggplot2)
@@ -50,3 +50,16 @@ head(quma)
 quma.lp <- quma[quma$leaf.present.observed=="Yes", c("Observer", "Date.Observed", "Species", "PlantNumber", "leaf.present.observed")]
 summary(quma.lp)
 dim(quma.lp)
+
+# When pulling one tree, don't forget double = to get T/F
+quercus.solo <- quma.lp[quma.lp$PlantNumber=="2390-26*2",]
+summary(quercus.solo)
+quercus.solo
+dim(quercus.solo)
+
+# How to pull multiple trees for the same species
+# quercus.duo <- quma.lp[quma.lp$PlantNumber=="2390-26*2" | quma.lp$PlantNumber=="132-2015*1",]
+quercus.duo <- quma.lp[quma.lp$PlantNumber %in% c("2390-26*2", "132-2015*1") & quma.lp$Observer=="Reidy",]
+summary(quercus.duo)
+
+# To pull multiple things: & = AND; | = OR
