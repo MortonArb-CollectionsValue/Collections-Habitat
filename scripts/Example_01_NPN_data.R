@@ -76,12 +76,12 @@ ggplot(quercus.all[quercus.all$PlantNumber=="392-2011*1"&quercus.all$Year=="2019
 
 #-----------------------------------Calculations
 #First leaf to last leaf
-quercus.firstleaf <- aggregate(yday ~ PlantNumber + Year, data=quercus.all[quercus.all$yday<"180" & quercus.all$leaf.present.observed=="Yes",], FUN=min)
+quercus.firstleaf <- aggregate(yday ~ Species + PlantNumber + Year, data=quercus.all[quercus.all$yday<"180" & quercus.all$leaf.present.observed=="Yes",], FUN=min)
 summary(quercus.firstleaf)
 head(quercus.firstleaf)
 names(quercus.firstleaf)[names( quercus.firstleaf)=="yday"] <- "yday.firstleaf"
 
-quercus.lastleaf <- aggregate(yday ~ PlantNumber + Year, data=quercus.all[quercus.all$yday>"180" & quercus.all$leaf.present.observed=="Yes",], FUN=max)
+quercus.lastleaf <- aggregate(yday ~ Species + PlantNumber + Year, data=quercus.all[quercus.all$yday>"180" & quercus.all$leaf.present.observed=="Yes",], FUN=max)
 summary(quercus.lastleaf)
 head(quercus.lastleaf)
 names(quercus.lastleaf)[names( quercus.lastleaf)=="yday"] <- "yday.lastleaf"
@@ -97,7 +97,7 @@ hist(quercus.summary1$duration1)
 
 #2: first budburst to last leaf
 
-quercus.firstbudburst <- aggregate(yday ~ PlantNumber + Year, data=quercus.all[quercus.all$leaf.breaking.buds.observed=="Yes",], FUN=min)
+quercus.firstbudburst <- aggregate(yday ~ Species + PlantNumber + Year, data=quercus.all[quercus.all$leaf.breaking.buds.observed=="Yes",], FUN=min)
 summary(quercus.firstbudburst)
 head(quercus.firstbudburst)
 names(quercus.firstbudburst)[names( quercus.firstbudburst)=="yday"] <- "yday.firstbudburst"
@@ -114,7 +114,7 @@ hist(quercus.summary2$duration2)
 
 #3: first budburst to fall color
 
-quercus.fallcolor <- aggregate(yday ~ PlantNumber + Year, data=quercus.all[quercus.all$leaf.color.observed=="Yes",], FUN=min)
+quercus.fallcolor <- aggregate(yday ~ Species + PlantNumber + Year, data=quercus.all[quercus.all$leaf.color.observed=="Yes",], FUN=min)
 summary(quercus.fallcolor)
 head(quercus.fallcolor)
 names(quercus.fallcolor)[names( quercus.fallcolor)=="yday"] <- "yday.fallcolor"
@@ -131,7 +131,7 @@ hist(quercus.summary3$duration3)
 
 #4: first leaf to fall color
 
-quercus.fallcolor <- aggregate(yday ~ PlantNumber + Year, data=quercus.all[quercus.all$leaf.color.observed=="Yes",], FUN=min)
+quercus.fallcolor <- aggregate(yday ~ Species + PlantNumber + Year, data=quercus.all[quercus.all$leaf.color.observed=="Yes",], FUN=min)
 summary(quercus.fallcolor)
 head(quercus.fallcolor)
 names(quercus.fallcolor)[names( quercus.fallcolor)=="yday"] <- "yday.fallcolor"
@@ -149,10 +149,10 @@ hist(quercus.summary4$duration4)
 
 # Saving durations
 
-write.csv(quercus.summary1$duration1, "../data/Durations_First_leaf_last_leaf.csv", row.names=F)
-write.csv(quercus.summary2$duration2, "../data/Durations_First_budburst_last_leaf.csv", row.names=F)
-write.csv(quercus.summary3$duration3, "../data/Durations_First_budburst_fall_color.csv", row.names=F)
-write.csv(quercus.summary4$duration4, "../data/Durations_First_leaf_fall_color.csv", row.names=F)
+write.csv(quercus.summary1, "../data/Durations_First_leaf_last_leaf.csv", row.names=F)
+write.csv(quercus.summary2, "../data/Durations_First_budburst_last_leaf.csv", row.names=F)
+write.csv(quercus.summary3, "../data/Durations_First_budburst_fall_color.csv", row.names=F)
+write.csv(quercus.summary4, "../data/Durations_First_leaf_fall_color.csv", row.names=F)
 
 # Average duration by species and year
 
@@ -169,6 +169,18 @@ duration4average <- aggregate(duration4 ~ PlantNumber+Year, data=quercus.summary
 summary(duration4average)
 
 #graphing
+
+box.duration1average <- ggplot(data=quercus.summary1) +
+  facet_grid(Year ~ .)
+  geom_boxplot(aes(x=Species, y=duration1)) +
+  guides(fill=F)
+box.duration1average
+
+histo.duration1average <- ggplot(data=quercus.summary4) +
+  #facet_grid(Year ~ .) + unsure if this is needed if we are just comparing season durations?
+  geom_boxplot(aes(x=Species, y=duration4)) +
+  guides(fill=F)
+histo.duration1average
 
 histo.duration1average <- ggplot(data=duration1average) +
   #facet_grid(Year ~ .) + unsure if this is needed if we are just comparing season durations?
@@ -207,6 +219,18 @@ png("../figures/Duration4Averages.png", height=6, width=6, units="in", res=180)
 histo.duration4average
 dev.off()
 
+# Comparison of select species
+#macrocarpa, alba, lyrata, lusitanica, pyrenaica, mongolica, macranthera
+
+# Duration #1: first leaf to last leaf
+
+macrocarpa1 <- aggregate(duration1 ~ Species + Year, data=quercus.summary1, FUN =)
+summary(macrocarpa1)
+
+macrocarpa2 <- quercus.summary1$duration1 + Species = "Quercus macrocarpa"
+
+ggplot(quercus.summary1$duration1[quercus.summary1$Species = "Quercus macrocarpa"])
+geom_point()
 # -----------------------------------
 # 2. Downloading NPN data
 # **** NOTE: rnpn needs to be installed from GITHUB -- not CRAN! ****
@@ -246,3 +270,23 @@ hist(oak.leaves$first_yes_doy)
 #saving the raw NPN data which has no filters set on it. This is just what all Q. alba data NPN has for 371 'Breaking Leaf Buds' and 483 'Leaves' 
 write.csv(oak.leaf, file.path(paste0('../data/NPN_Quercus_Raw_', species.name, '.csv')), row.names=F)
 
+###duration 1: first leaf to last leaf
+
+npn.firstleaf <- aggregate(yday ~ PlantNumber + Year, data=oak.leaf[oak.leaf$yday<"180" & quercus.all$leaf.present.observed=="Yes",], FUN=min)
+summary(quercus.firstleaf)
+head(quercus.firstleaf)
+names(quercus.firstleaf)[names( quercus.firstleaf)=="yday"] <- "yday.firstleaf"
+
+quercus.lastleaf <- aggregate(yday ~ PlantNumber + Year, data=quercus.all[quercus.all$yday>"180" & quercus.all$leaf.present.observed=="Yes",], FUN=max)
+summary(quercus.lastleaf)
+head(quercus.lastleaf)
+names(quercus.lastleaf)[names( quercus.lastleaf)=="yday"] <- "yday.lastleaf"
+
+quercus.summary1 <- merge(quercus.firstleaf, quercus.lastleaf, all=T)
+summary(quercus.summary1)
+
+quercus.summary1$duration1 <- quercus.summary1$yday.lastleaf-quercus.summary1$yday.firstleaf
+summary(quercus.summary1)
+head(quercus.summary1)
+
+hist(quercus.summary1$duration1)
