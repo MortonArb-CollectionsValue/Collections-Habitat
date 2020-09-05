@@ -1,3 +1,4 @@
+#Libraries
 install.packages("devtools")
 library('devtools')
 devtools::install_github("usa-npn/rnpn")
@@ -29,70 +30,42 @@ quercus.all$yday <- lubridate::yday(quercus.all$Date.Observed)
 #-----------------------------------Calculations
 #First leaf to last leaf
 quercus.firstleaf <- aggregate(yday ~ Species + PlantNumber + Year, data=quercus.all[quercus.all$yday<"180" & quercus.all$leaf.present.observed=="Yes",], FUN=min)
-summary(quercus.firstleaf)
-head(quercus.firstleaf)
 names(quercus.firstleaf)[names( quercus.firstleaf)=="yday"] <- "yday.firstleaf"
 
 quercus.lastleaf <- aggregate(yday ~ Species + PlantNumber + Year, data=quercus.all[quercus.all$yday>"180" & quercus.all$leaf.present.observed=="Yes",], FUN=max)
-summary(quercus.lastleaf)
-head(quercus.lastleaf)
 names(quercus.lastleaf)[names( quercus.lastleaf)=="yday"] <- "yday.lastleaf"
 
 quercus.summary1 <- merge(quercus.firstleaf, quercus.lastleaf, all=T)
 
 quercus.summary1$duration1 <- quercus.summary1$yday.lastleaf-quercus.summary1$yday.firstleaf
 
-hist(quercus.summary1$duration1)
-
 #2: first budburst to last leaf
 
 quercus.firstbudburst <- aggregate(yday ~ Species + PlantNumber + Year, data=quercus.all[quercus.all$leaf.breaking.buds.observed=="Yes",], FUN=min)
 names(quercus.firstbudburst)[names( quercus.firstbudburst)=="yday"] <- "yday.firstbudburst"
 
-
 quercus.summary2<- merge(quercus.lastleaf, quercus.firstbudburst, all=T)
-summary(quercus.summary2)
 
 quercus.summary2$duration2 <- quercus.summary2$yday.lastleaf-quercus.summary2$yday.firstbudburst
-summary(quercus.summary2)
-head(quercus.summary2)
-
-hist(quercus.summary2$duration2)
 
 #3: first budburst to fall color
 
 quercus.fallcolor <- aggregate(yday ~ Species + PlantNumber + Year, data=quercus.all[quercus.all$leaf.color.observed=="Yes",], FUN=min)
-summary(quercus.fallcolor)
-head(quercus.fallcolor)
 names(quercus.fallcolor)[names( quercus.fallcolor)=="yday"] <- "yday.fallcolor"
 
-
 quercus.summary3<- merge(quercus.firstbudburst, quercus.fallcolor, all=T)
-summary(quercus.summary3)
 
 quercus.summary3$duration3 <- quercus.summary3$yday.fallcolor-quercus.summary3$yday.firstbudburst
-summary(quercus.summary3)
-head(quercus.summary3)
-
-hist(quercus.summary3$duration3)
 
 #4: first leaf to fall color
 
 quercus.fallcolor <- aggregate(yday ~ Species + PlantNumber + Year, data=quercus.all[quercus.all$leaf.color.observed=="Yes",], FUN=min)
-summary(quercus.fallcolor)
-head(quercus.fallcolor)
 names(quercus.fallcolor)[names( quercus.fallcolor)=="yday"] <- "yday.fallcolor"
 
 
 quercus.summary4<- merge(quercus.firstleaf, quercus.fallcolor, all=T)
-summary(quercus.summary3)
 
 quercus.summary4$duration4 <- quercus.summary4$yday.fallcolor-quercus.summary4$yday.firstleaf
-summary(quercus.summary4)
-head(quercus.summary4)
-
-hist(quercus.summary4$duration4)
-
 
 # Saving durations
 
