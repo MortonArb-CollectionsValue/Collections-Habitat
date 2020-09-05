@@ -1,3 +1,10 @@
+#Libraries
+install.packages("devtools")
+library('devtools')
+devtools::install_github("usa-npn/rnpn")
+
+library(googlesheets4); library(car); library(lubridate)
+library(ggplot2)
 #Durations of select species
 #1.1: Macrocarpa, first leaf to last leaf
 flmac <- aggregate(yday ~ Species + PlantNumber + Year, data=quercus.all[quercus.all$yday<"180" & quercus.all$leaf.present.observed=="Yes" & quercus.all$Species=="Quercus macrocarpa",], FUN=min)
@@ -226,5 +233,20 @@ macranthera4<- merge(flmacr, fcmacr, all=T)
 
 macranthera4$d4 <- macranthera4$yday.fallcolor-macranthera4$yday.firstleaf
 
+#merging
 
+d1.all <- rbind(macrocarpa1, alba1, lyrata1, lusitanica1, pyrenaica1, mongolica1, macranthera1)
+
+d2.all <- rbind(macrocarpa2, alba2, lyrata2, lusitanica2, pyrenaica2, mongolica2, macranthera2)
+
+d3.all <- rbind(macrocarpa3, alba3, lyrata3, lusitanica3, pyrenaica3, mongolica3, macranthera3)
+
+d4.all <- rbind(macrocarpa4, alba4, lyrata4, lusitanica4, pyrenaica4, mongolica4, macranthera4)
+
+
+boxd1all <- ggplot(data=d1.all) +
+  facet_grid(Year ~ .)
+  geom_boxplot(aes(x=Species, y=d1)) +
+  guides(fill=F)
+boxd1all
 
