@@ -91,52 +91,43 @@ summary(duration4average)
 #graphing
 
 duration1average <- ggplot(data=quercus.summary1) +
-  #facet_grid(Year ~ .) + unsure if this is needed if we are just comparing season durations?
+  facet_grid(Year ~ .) + 
   geom_boxplot(aes(x=Species, y=duration1)) +
   guides(fill=F)
 duration1average
 
-histo.duration1average <- ggplot(data=quercus.summary4) +
-  #facet_grid(Year ~ .) + unsure if this is needed if we are just comparing season durations?
+duration2average <- ggplot(data=quercus.summary2) +
+  facet_grid(Year ~ .) +
+  geom_boxplot(aes(x=Species, y=duration2)) +
+  guides(fill=F)
+duration2average
+
+duration3average <- ggplot(data=quercus.summary3) +
+  facet_grid(Year ~ .) +
+  geom_boxplot(aes(x=Species, y=duration3)) +
+  guides(fill=F)
+duration3average
+
+duration4average <- ggplot(data=quercus.summary4) +
+  facet_grid(Year ~ .) +
   geom_boxplot(aes(x=Species, y=duration4)) +
   guides(fill=F)
-histo.duration1average
-
-histo.duration1average <- ggplot(data=duration1average) +
-  #facet_grid(Year ~ .) + unsure if this is needed if we are just comparing season durations?
-  geom_histogram(aes(x=duration1,),binwidth = 10) +
-  guides(fill=F)
-histo.duration1average
-
-histo.duration2average <- ggplot(data=duration2average) +
-  geom_histogram(aes(x=duration2,),binwidth = 10) +
-  guides(fill=F)
-histo.duration2average
-
-histo.duration3average <- ggplot(data=duration3average) +
-  geom_histogram(aes(x=duration3,),binwidth = 10) +
-  guides(fill=F)
-histo.duration3average
-
-histo.duration4average <- ggplot(data=duration4average) +
-  geom_histogram(aes(x=duration4,),binwidth = 10) +
-  guides(fill=F)
-histo.duration4average
+duration4average
 
 png("../figures/Duration1Averages.png", height=6, width=6, units="in", res=180)
-histo.duration1average
+duration1average
 dev.off()
 
 png("../figures/Duration2Averages.png", height=6, width=6, units="in", res=180)
-histo.duration2average
+duration2average
 dev.off()
 
 png("../figures/Duration3Averages.png", height=6, width=6, units="in", res=180)
-histo.duration3average
+duration3average
 dev.off()
 
 png("../figures/Duration4Averages.png", height=6, width=6, units="in", res=180)
-histo.duration4average
+duration4average
 dev.off()
 
 
