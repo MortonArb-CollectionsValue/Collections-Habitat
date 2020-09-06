@@ -243,10 +243,31 @@ d3.all <- rbind(macrocarpa3, alba3, lyrata3, lusitanica3, pyrenaica3, mongolica3
 
 d4.all <- rbind(macrocarpa4, alba4, lyrata4, lusitanica4, pyrenaica4, mongolica4, macranthera4)
 
-
+#graphing
 boxd1all <- ggplot(data=d1.all) +
-  facet_grid(Year ~ .)
+  facet_grid(Year ~ .) +
   geom_boxplot(aes(x=Species, y=d1)) +
   guides(fill=F)
 boxd1all
+
+boxd2all <- ggplot(data=d2.all) +
+  facet_grid(Year ~ .) +
+  geom_boxplot(aes(x=Species, y=d2)) +
+  guides(fill=F)
+boxd2all
+
+boxd3all <- ggplot(data=d3.all) +
+  facet_grid(Year ~ .) +
+  geom_boxplot(aes(x=Species, y=d3)) +
+  guides(fill=F)
+boxd3all
+
+boxd4all <- ggplot(data=d4.all) +
+  facet_grid(Year ~ .) +
+  geom_boxplot(aes(x=Species, y=d4)) +
+  guides(fill=F)
+boxd4all
+
+
+
 
