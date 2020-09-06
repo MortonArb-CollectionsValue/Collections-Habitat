@@ -268,6 +268,19 @@ boxd4all <- ggplot(data=d4.all) +
   guides(fill=F)
 boxd4all
 
+png("../figures/boxd1all.png", height=6, width=6, units="in", res=180)
+boxd1all
+dev.off()
 
+png("../figures/boxd2all.png", height=6, width=6, units="in", res=180)
+boxd2all
+dev.off()
 
+png("../figures/boxd3all.png", height=6, width=6, units="in", res=180)
+boxd3all
+dev.off()
+
+png("../figures/boxd4all.png", height=6, width=6, units="in", res=180)
+boxd4all
+dev.off()
 
