@@ -57,6 +57,14 @@ summary(quercus.solo)
 quercus.solo
 dim(quercus.solo)
 
+#finding the minimimum and maximum of the dates leaves pesent was observed on our tree.
+min(quercus.solo$Date.Observed)
+max(quercus.solo$Date.Observed)
+range(quercus.solo$Date.Observed)
+solo.dates <- range(quercus.solo$Date.Observed)
+
+summary(solo.dates)
+
 # How to pull multiple trees for the same species
 # quercus.duo <- quma.lp[quma.lp$PlantNumber=="2390-26*2" | quma.lp$PlantNumber=="132-2015*1",]
 quercus.duo <- quma.lp[quma.lp$PlantNumber %in% c("2390-26*2", "132-2015*1") & quma.lp$Observer=="Reidy",]
