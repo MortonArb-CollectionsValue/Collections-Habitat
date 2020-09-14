@@ -31,3 +31,7 @@ library(nlme)
 lme1 <- lme(duration1 ~ Species, random=list(PlantNumber=~1, Year=~1), data=quercus.subset, na.action=na.omit)
 summary(lme1)
 summary(mod1)
+
+lme2 <- lme(duration1 ~ relevel(Species, "Quercus macrocarpa"), random=list(PlantNumber=~1, Year=~1), data=quercus.subset, na.action=na.omit)
+summary(lme2)
+summary(mod2)
