@@ -1,7 +1,7 @@
 #Libraries
-install.packages("devtools")
-library('devtools')
-devtools::install_github("usa-npn/rnpn")
+# install.packages("devtools")
+# library('devtools')
+# devtools::install_github("usa-npn/rnpn")
 
 library(googlesheets4); library(car); library(lubridate)
 library(ggplot2)
