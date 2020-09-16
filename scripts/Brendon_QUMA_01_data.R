@@ -70,4 +70,8 @@ summary(solo.dates)
 quercus.duo <- quma.lp[quma.lp$PlantNumber %in% c("2390-26*2", "132-2015*1") & quma.lp$Observer=="Reidy",]
 summary(quercus.duo)
 
-# To pull multiple things: & = AND; | = OR
+#Plotting presence of fruit accoring to date in Quercus Marcocarpa
+ggplot(data=quma, aes(x=Date.Observed)) +
+  geom_histogram(aes(fill=fruit.present.observed), binwidth=7) +
+  ggtitle("Quercus Macrocarpa fruit present")
+dev.off()
