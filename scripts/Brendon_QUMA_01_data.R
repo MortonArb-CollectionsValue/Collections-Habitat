@@ -21,10 +21,7 @@ if(!dir.exists("../figures/")) dir.create("../figures/")
 # -----------------------------------
 source("clean_google_form.R")
 
-# For your project we'll want the 2018 and 2019 Oak data
-# ** First Time: Make sure to follow the prompts in the console**
-# It will take a few moments/minutes for the script to run
-# Ignore the warnings -- it's stuff the function fixes
+
 
 # Downloading 2020 data
 quercus20 <- clean.google(collection="Quercus", dat.yr=2020)
