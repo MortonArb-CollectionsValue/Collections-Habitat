@@ -1,7 +1,7 @@
 #Libraries
-# install.packages("devtools")
-# library('devtools')
-# devtools::install_github("usa-npn/rnpn")
+install.packages("devtools")
+library('devtools')
+devtools::install_github("usa-npn/rnpn")
 
 library(googlesheets4); library(car); library(lubridate)
 library(ggplot2)
@@ -247,25 +247,26 @@ d4.all <- rbind(macrocarpa4, alba4, lyrata4, lusitanica4, pyrenaica4, mongolica4
 boxd1all <- ggplot(data=d1.all) +
   facet_grid(Year ~ .) +
   geom_boxplot(aes(x=Species, y=d1)) +
-  guides(fill=F)
+  theme(axis.text.x=element_text(angle=-35, hjust=0))
 boxd1all
 
 boxd2all <- ggplot(data=d2.all) +
+  ggtitle("First leaf to last leaf") +
   facet_grid(Year ~ .) +
-  geom_boxplot(aes(x=Species, y=d2)) +
-  guides(fill=F)
+  geom_boxplot(aes(x=Species, y=Duration (days))) +
+  theme(axis.text.x=element_text(angle=-35, hjust=0))
 boxd2all
 
 boxd3all <- ggplot(data=d3.all) +
   facet_grid(Year ~ .) +
   geom_boxplot(aes(x=Species, y=d3)) +
-  guides(fill=F)
+  theme(axis.text.x=element_text(angle=-35, hjust=0))
 boxd3all
 
 boxd4all <- ggplot(data=d4.all) +
   facet_grid(Year ~ .) +
   geom_boxplot(aes(x=Species, y=d4)) +
-  guides(fill=F)
+  theme(axis.text.x=element_text(angle=-35, hjust=0))
 boxd4all
 
 png("../figures/boxd1all.png", height=6, width=6, units="in", res=180)

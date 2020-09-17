@@ -1,7 +1,7 @@
 #Libraries
-# install.packages("devtools")
-# library('devtools')
-# devtools::install_github("usa-npn/rnpn")
+install.packages("devtools")
+library('devtools')
+devtools::install_github("usa-npn/rnpn")
 
 library(googlesheets4); library(car); library(lubridate)
 library(ggplot2)
@@ -15,13 +15,11 @@ source("clean_google_form.R")
 quercus19 <- clean.google(collection="Quercus", dat.yr=2019)
 quercus19$Collection <- as.factor("Quercus")
 quercus19$Year <- lubridate::year(quercus19$Date.Observed)
-summary(quercus19)
 
 # Downloading 2018 data
 quercus18 <- clean.google(collection="Quercus", dat.yr=2018)
 quercus18$Collection <- as.factor("Quercus")
 quercus18$Year <- lubridate::year(quercus18$Date.Observed)
-summary(quercus18)
 
 quercus.all <- rbind(quercus18, quercus19)
 
@@ -62,7 +60,6 @@ quercus.summary3$duration3 <- quercus.summary3$yday.fallcolor-quercus.summary3$y
 quercus.fallcolor <- aggregate(yday ~ Species + PlantNumber + Year, data=quercus.all[quercus.all$leaf.color.observed=="Yes",], FUN=min)
 names(quercus.fallcolor)[names( quercus.fallcolor)=="yday"] <- "yday.fallcolor"
 
-
 quercus.summary4<- merge(quercus.firstleaf, quercus.fallcolor, all=T)
 
 quercus.summary4$duration4 <- quercus.summary4$yday.fallcolor-quercus.summary4$yday.firstleaf
@@ -77,18 +74,14 @@ write.csv(quercus.summary4, "../data/Durations_First_leaf_fall_color.csv", row.n
 # Average duration by species and year
 
 duration1average <- aggregate(duration1 ~ PlantNumber+Year, data=quercus.summary1, FUN=mean)
-summary(duration1average)
 
 duration2average <- aggregate(duration2 ~ PlantNumber+Year, data=quercus.summary2, FUN=mean)
-summary(duration2average)
 
 duration3average <- aggregate(duration3 ~ PlantNumber+Year, data=quercus.summary3, FUN=mean)
-summary(duration3average)
 
 duration4average <- aggregate(duration4 ~ PlantNumber+Year, data=quercus.summary4, FUN=mean)
-summary(duration4average)
 
-#graphing
+#Graphing
 
 duration1average <- ggplot(data=quercus.summary1) +
   facet_grid(Year ~ .) + 
@@ -113,6 +106,9 @@ duration4average <- ggplot(data=quercus.summary4) +
   geom_boxplot(aes(x=Species, y=duration4)) +
   guides(fill=F)
 duration4average
+
+
+# Saving graphs
 
 png("../figures/Duration1Averages.png", height=6, width=6, units="in", res=180)
 duration1average

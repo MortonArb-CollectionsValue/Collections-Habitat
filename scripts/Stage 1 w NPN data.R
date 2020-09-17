@@ -35,11 +35,10 @@ write.csv(oak.leaf, file.path(paste0('../data/NPN_Quercus_Raw_', species.name, '
 ###duration 1: first leaf to last leaf
 
 npn.firstleaf <- aggregate(yday ~ PlantNumber + Year, data=oak.leaf[oak.leaf$yday<"180" & quercus.all$leaf.present.observed=="Yes",], FUN=min)
-summary(quercus.firstleaf)
-head(quercus.firstleaf)
-names(quercus.firstleaf)[names( quercus.firstleaf)=="yday"] <- "yday.firstleaf"
+summary(npn.firstleaf)
+names(npn.firstleaf)[names(npn.firstleaf)=="yday"] <- "yday.firstleaf"
 
-quercus.lastleaf <- aggregate(yday ~ PlantNumber + Year, data=quercus.all[quercus.all$yday>"180" & quercus.all$leaf.present.observed=="Yes",], FUN=max)
+npn.lastleaf <- aggregate(yday ~ PlantNumber + Year, data=quercus.all[oak.leaf$yday>"180" & quercus.all$leaf.present.observed=="Yes",], FUN=max)
 summary(quercus.lastleaf)
 head(quercus.lastleaf)
 names(quercus.lastleaf)[names( quercus.lastleaf)=="yday"] <- "yday.lastleaf"
